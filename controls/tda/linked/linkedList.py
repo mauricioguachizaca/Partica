@@ -156,13 +156,12 @@ class LinkedList(object):
                 cont += 1
                 node = node._next
         return array
-    #Convierte un array a una lista -------------------------------------------------------------------------------------------
+
     def toList(self, array):
         self.clear
         for i in range (0, len(array)):
             self.__addLast__(array[i])
 
-    #Ordenamiento de la lista-------------------------------------------------------------------------------------------------
     def sort(self, type, metodo = 1):
         if self.isEmpty:
             raise LinkedEmpty("List empty")

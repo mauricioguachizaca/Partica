@@ -1,8 +1,6 @@
 from flask import Blueprint, jsonify, make_response, request, render_template, redirect, abort
 from controls.facturaDaoControl import FacturaDaoControl  # Importamos el nuevo controlador
 from flask_cors import CORS
-from models.factura import Factura
-from controls.tda.linked.linkedList import LinkedList
 
 
 router = Blueprint('router', __name__)
