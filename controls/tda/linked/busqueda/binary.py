@@ -39,19 +39,23 @@ class Binary:
         quickSort = QuickSort()
         array = quickSort.sort_models_ascendent(array, attribute)
         
-        element = element.upper()# Convertir el elemento buscado a mayúsculas
         left = 0
         right = len(array) - 1
+        aux = []
         while left <= right:
             middle = (left + right) // 2
-            middle_value = getattr(array[middle], attribute).upper()  # Convertir el valor del atributo a mayúsculas
+            middle_value = getattr(array[middle], attribute)  # Retrieve the attribute's value
 
             if middle_value == element:
-                return middle
-            elif middle_value < element:
-                left = middle + 1
+                aux.append(array[middle])
+                return aux
             else:
-                right = middle - 1
+                if element < middle_value:
+                    right = middle - 1
+                else:
+                    left = middle + 1
 
-        return -1
+        return aux  # Return aux if the elem
+
+        
     

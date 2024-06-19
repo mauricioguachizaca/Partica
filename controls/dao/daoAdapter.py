@@ -20,7 +20,7 @@ class DaoAdapter(Generic[T]):
             self.lista.clear
             for data in datos:
                 print(type(data))
-                a = self.atype.deserializar(data)
+                a = self.atype().deserializar(data)
                 self.lista.add(a, self.lista._lenght)
             f.close()
         return self.lista
@@ -29,9 +29,9 @@ class DaoAdapter(Generic[T]):
         aux = "["
         for i in range(0, self.lista._lenght):
             if i < self.lista._lenght - 1:
-                aux += str(json.dumps(self.lista.get(i).serializar)) + ","
+                aux += str(json.dumps(self.lista.get(i).serialize)) + ","
             else:
-                aux += str(json.dumps(self.lista.get(i).serializar)) 
+                aux += str(json.dumps(self.lista.get(i).serialize)) 
         aux += "]"
         return aux
     
@@ -40,14 +40,14 @@ class DaoAdapter(Generic[T]):
         lista = self._list()
         arreglo = lista.toArray
         for i in range(0, lista._lenght):
-            aux.append(arreglo[i].serializar)
+            aux.append(arreglo[i].serialize)
         return aux
     
-    def to_dic_lista(self, lista):
+    def to_dic_lista(self):
         aux = []
-        arreglo = lista.toArray
-        for i in range(0, lista._lenght):
-            aux.append(arreglo[i].serializar)
+        arreglo = self.lista.toArray
+        for i in range(0, self.lista._lenght):
+            aux.append(arreglo[i].serialize)
         #print(aux)
         return aux
 

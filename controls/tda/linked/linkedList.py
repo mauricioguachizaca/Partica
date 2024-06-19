@@ -7,6 +7,8 @@ from numbers import Number
 from controls.tda.linked.ordenacion.shellSort import ShellSort
 from controls.tda.linked.ordenacion.quickSort import QuickSort
 from controls.tda.linked.ordenacion.mergeSort import MergeSort
+from controls.tda.linked.busqueda.binary import Binary
+from controls.tda.linked.busqueda.binarySecuencial import BinarySecuencial
 
 
 class LinkedList(object):
@@ -87,22 +89,11 @@ class LinkedList(object):
             node._data = data
 
     def get(self, pos):
-        
-        if self.isEmpty:
-            raise LinkedEmpty("List empty")
-        elif pos < 0 or pos >= self._lenght:
-            raise ArrayPositionException("Index out range")
-        elif pos == 0:
-            return self.__head._data
-        elif pos == (self.__lenght - 1):
-            return self.__last._data
-        else:
-            node = self.__head
-            cont = 0
-            while cont < pos:
-                cont += 1
-                node = node._next
-            return node._data
+        try:
+            return self.getNode(pos)._data
+        except Exception as error:
+            print(error)
+            return None
         
     @property
     def clear(self):
@@ -210,5 +201,18 @@ class LinkedList(object):
             self.toList(array)
         return self
 
-
-    
+    def search(self, elemento, atributo, type = 1):
+        if self.isEmpty:
+            raise LinkedEmpty("List empty")
+        else:
+            array = self.toArray
+            if type == 1:
+                search = BinarySecuencial()
+            else:
+                search = Binary()
+                # arr, element, atrr
+            array = search.search_binary_models(array, elemento, atributo)
+            print(array)
+            self.toList(array)
+            
+              

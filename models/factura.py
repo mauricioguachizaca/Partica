@@ -58,10 +58,10 @@ class Factura:
 
     def deserializar(self, data):
         factura = Factura()
-        factura.id = data['id']
-        factura.usuario = data['usuario']
-        factura.ruc = data['ruc']
-        factura.monto = data['monto']
-        factura.tiporuc = data['tiporuc']
+        factura._id = data['id']
+        factura._usuario = data['usuario']
+        factura._ruc = data['ruc']
+        factura._monto = data['monto']
+        factura._tiporuc = data['tiporuc']
         return factura
 

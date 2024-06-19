@@ -1,7 +1,3 @@
-{% extends "template.html" %}
-
-{% block content %}
-
 
 {% extends "template.html" %}
 
@@ -25,13 +21,14 @@
                     <tbody>
                         {% for factura in lista %}
                         <tr>
-                            <td>{{ factura.get_id() }}</td>
-                            <td>{{ factura.get_usuario() }}</td>
-                            <td>{{ factura.get_ruc() }}</td>
-                            <td>{{ factura.get_monto() }}</td>
-                            <td>{{ factura.get_tiporuc() }}</td>
+                            <td>{{ factura._id }}</td>
+                            <td>{{ factura._usuario }}</td>
+                            <td>{{ factura._ruc }}</td>
+                            <td>{{ factura._monto }}</td>
+                            <td>{{ factura._tiporuc }}</td>
+                            
                             <td>
-                                <a href="/facturas/editar/{{ factura.get_id() }}" class="btn btn-primary">Editar</a>
+                                <a href="/facturas/editar/{{ factura.id }}" class="btn btn-primary">Editar</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -42,20 +39,7 @@
     </div>
 </div>
 
-{% endblock %}
 
-
-                        <div class="col-lg-5 col-12 p-0">
-                            <div class="booking-form-image-wrap">
-                                
-                                <img src="{{ url_for('static', filename='images/barman-with-fruits.jpg')}}" class="booking-form-image img-fluid" alt="">
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </div>
 
 {% endblock %}
 

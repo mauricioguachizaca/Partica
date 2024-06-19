@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, make_response, request, render_template, r
 from controls.facturaDaoControl import FacturaDaoControl  # Importamos el nuevo controlador
 from flask_cors import CORS
 from models.factura import Factura
-from controls.tda.linked.linkedList import Linked_List
+from controls.tda.linked.linkedList import LinkedList
 
 
 router = Blueprint('router', __name__)
@@ -23,17 +23,23 @@ def ver_facturas():
 def ver_guardar():
     return render_template('facturas/guardar.html')
 
-@router.route('/facturas/<metodo>/<criterio>/<ordenar>')
-def ver_facturas_ordenar(metodo, criterio, ordenar):
+@router.route('/facturas/<attr>/<int:metodo>/<int:tipo>')
+def ver_facturas_ordenar(tipo, attr, metodo):
     fc = FacturaDaoControl() 
      # Usamos el nuevo controlador FacturaDaoControl
-    fc.sort_models(metodo, criterio, ordenar)
-    return render_template('facturas/lista.html', lista=fc.to_dict(fc))
+    fc._lista.sort_models(attr, tipo , metodo)
+    return make_response({'data': fc.to_dic_lista(), 'code': 200})
 
-@router.route('/facturas/editar/<pos>')
+@router.route('/facturas/buscar/<attr>/<elemento>/<int:tipo>')
+def ver_facturas_buscar(tipo, attr, elemento):
+    fc = FacturaDaoControl() 
+    fc._lista.search(elemento , attr , tipo)
+    return make_response({'data': fc.to_dic_lista(), 'code': 200})
+
+@router.route('/facturas/editar/<int:pos>')
 def ver_editar(pos):
     fc = FacturaDaoControl()  # Usamos el nuevo controlador FacturaDaoControl
-    factura = fc._list[int(pos) - 1]
+    factura = fc._lista.get(pos-1)
     print(factura)
     return render_template('facturas/editar.html', data=factura)
 
@@ -47,16 +53,15 @@ def guardar_factura():
         abort(400)
 
     # Crear instancia de Factura y asignar valores
-    factura = Factura()
-    factura.usuario = data['usuario']
-    factura.ruc = data['ruc']
-    factura.monto = float(data['monto'])
-    factura.tiporuc = float(data['tiporuc'])
+    factura = FacturaDaoControl()
+    factura._factura._usuario = data['usuario']
+    factura._factura._ruc = data['ruc']
+    factura._factura._monto = float(data['monto'])
+    factura._factura._tiporuc = float(data['tiporuc'])
 
     try:
         # Asignar factura al controlador y guardarla
-        fc._factura = factura
-        fc.save()
+        factura.save
     except Exception as e:
         abort(500, f"Error al guardar la factura: {str(e)}")
 
@@ -79,3 +84,6 @@ def modificar_factura():
     fc._factura._tiporuc = float(data['tiporuc'])
     fc.merge(pos)
     return redirect('/facturas', code=302)
+
+
+

@@ -2,12 +2,39 @@
 
 {% block content %}
 
-<form class="custom-form booking-form text-center" action="#" method="post" role="form">
+<div class="custom-form booking-form text-center" >
     <div class="text-center mb-4 pb-lg-2">
         <em class="text-white">Universidad Nacional de Loja</em>
         <h2 class="text-white">Lista de Facturas</h2>
         <a href="facturas/formulario" class="btn custom-btn custom-border-btn">Formulario</a>
     </div>
+    <select name="atributo" id="atributo" class="form-control custom-border-select">
+        <option value="_usuario">Usuario</option>
+        <option value="_ruc">Ruc</option>
+        <option value="_monto">Monto</option>
+    </select>
+    <select name="metodoOrdenacion" id="metodoOrdenacion" class="form-control custom-border-select">
+        <option value="1">QuickSort</option>
+        <option value="2">MergeSort</option>
+        <option value="3">ShellSort</option>
+    </select>
+    <select name="orden" id="orden" class="form-control custom-border-select">
+        <option  value="1">Ascendente</option>
+        <option value="2">Descendente</option>
+    </select>
+
+    <p>Busqueda</p>
+    <select name="criterioBusqueda" id="criterioBusqueda" class="form-control custom-border-select">
+        <option value="_usuario">Usuario</option>
+        <option value="_ruc">Ruc</option>
+    </select>
+    <select name="metodoBusqueda" id="metodoBusqueda" class="form-control custom-border-select">
+        <option value="0">Binario</option>
+        <option value="1">Lineal</option>
+    </select>
+
+    <input type="text" class="form-control text-center form-bi-search-heart" id="search" name="search" placeholder="--------">
+
 
     <div class="booking-form-body">
         <table class="table table-bordered text-white" id="tabla">
@@ -35,6 +62,73 @@
             </tbody>
         </table>
     </div>
-</form>
+</div>
 
+
+<script>
+    
+
+    if (atributo && metodoOrdenacion && orden){
+        [atributo, metodoOrdenacion, orden].forEach(element => {
+            element.addEventListener('change', () => {
+                const atributo = document.getElementById('atributo');
+                const metodoOrdenacion = document.getElementById('metodoOrdenacion');
+                const orden = document.getElementById('orden');
+                
+                ordenate(atributo.value, metodoOrdenacion.value, orden.value);
+            });
+        });
+    }
+
+    if (metodoBusqueda && criterioBusqueda){
+        [metodoBusqueda, criterioBusqueda].forEach(element => {
+            element.addEventListener('change', () => {
+                search();
+            });
+        });
+    }
+    
+    $('#search').keyup(function() {
+        search();
+    }); 
+
+    function search() {
+        const metodo = document.getElementById('metodoBusqueda').value;
+        const atrib = document.getElementById('criterioBusqueda').value;
+        const search = $('#search').val();
+        console.log(search, atrib, metodo);
+        //route('/facturas/buscar/<attr>/<elemento>/<int:tipo>')
+        tabla("http://127.0.0.1:5000//facturas/buscar/"+atrib+"/"+search+"/"+metodo+"");
+    }
+
+    function ordenate(atributo,metodoOrdenacion,orden){
+        tabla('http://127.0.0.1:5000//facturas/'+atributo+'/'+metodoOrdenacion+'/'+orden+'');
+    }
+    function tabla(url){
+        $.ajax({
+            method: "GET",
+            url: url,
+            contentType: 'json',
+            success: function(data){
+                console.log(data);
+                if (data.code == 200){
+                    var html = '';
+                    $.each(data.data, function(i, item){
+                        html += '<tr>';
+                        html += '<td>'+item.usuario+'</td>';
+                        html += '<td>'+item.ruc+'</td>';
+                        html += '<td>'+item.monto+'</td>';
+                        html += '<td>'+item.tiporuc+'</td>';
+                        html += '<td> <a href="/facturas/editar/'+item.id+'" class="btn custom-btn custom-border-btn">Editar</a> </td>';
+                        html += '</tr>';
+                    });
+                    $('#tabla tbody').html(html);
+                }
+            }
+        });
+    }
+    
+
+    
+</script>
 {% endblock %}
