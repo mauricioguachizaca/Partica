@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+
+{% block content %}
+
+<form class="custom-form booking-form text-center" action="#" method="post" role="form">
+    <div class="text-center mb-4 pb-lg-2">
+        <em class="text-white">Universidad Nacional de Loja</em>
+        <h2 class="text-white">Lista de Facturas</h2>
+        <a href="facturas/formulario" class="btn custom-btn custom-border-btn">Formulario</a>
+    </div>
+
+    <div class="booking-form-body">
+        <table class="table table-bordered text-white" id="tabla">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>RUC</th>
+                    <th>Monto</th>
+                    <th>Retención</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for factura in lista %}
+                <tr>
+                    <td>{{ factura.usuario }}</td>
+                    <td>{{ factura.ruc }}</td>
+                    <td>{{ factura.monto }}</td>
+                    <td>{{ factura.tiporuc }}</td>
+                   <td>
+                        <a href="/facturas/editar/{{ factura.id }}" class="btn custom-btn custom-border-btn">Editar</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</form>
+
+{% endblock %}
